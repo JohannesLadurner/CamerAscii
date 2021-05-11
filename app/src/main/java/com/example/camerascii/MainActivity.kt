@@ -96,7 +96,10 @@ class MainActivity : Activity(), PictureCallback, Camera.PreviewCallback {
         var out = ByteArrayOutputStream()
         yuv.compressToJpeg(Rect(0, 0, width, height), 50, out)
         var bytes: ByteArray = out.toByteArray()
-        var bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+
+        var options = BitmapFactory.Options()
+        options.inSampleSize = 16
+        var bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size, options)
 
         //Draw on SurfaceView
         /*
@@ -106,7 +109,7 @@ class MainActivity : Activity(), PictureCallback, Camera.PreviewCallback {
         view.draw(canvas)
 
          */
-        var pixels = ImageToAscii.getBitmapData(bitmap)
+        var pixels = ImageToAscii.getBitmapPixels(bitmap)
 
     }
 
