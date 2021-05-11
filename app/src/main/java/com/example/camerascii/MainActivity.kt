@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.graphics.*
 import android.hardware.Camera
 import android.hardware.Camera.PictureCallback
+import android.media.Image
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -105,6 +106,8 @@ class MainActivity : Activity(), PictureCallback, Camera.PreviewCallback {
         view.draw(canvas)
 
          */
+        var pixels = ImageToAscii.getBitmapData(bitmap)
+
     }
 
 
