@@ -109,7 +109,7 @@ class MainActivity : Activity(), PictureCallback, Camera.PreviewCallback {
         view.draw(canvas)
 
          */
-        var pixels = ImageToAscii.getBitmapPixels(bitmap)
+        var image = ImageToAscii.getAsciiImage(bitmap)
 
     }
 
