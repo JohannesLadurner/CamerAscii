@@ -16,9 +16,9 @@ class ImageToAscii {
         private fun getBitmapPixels(bitmap: Bitmap): IntArray {
             var pixels = IntArray(bitmap.width * bitmap.height)
 
-            //Since we build 3x2 blocks, the width has to be divisable by 2, and the height by 3. Cut the remaining columns/rows off!
+            //Since we build 3x1 blocks, we have to make sure that the height is divisable by 3
             newBitmapHeight = bitmap.height - (bitmap.height % 3)
-            newBitmapWidth = bitmap.width - (bitmap.width % 2)
+            newBitmapWidth = bitmap.width
             bitmap.getPixels(
                 pixels, 0, bitmap.width, 0, 0,
                 newBitmapWidth,
@@ -37,34 +37,33 @@ class ImageToAscii {
             6. Turn fields into chars
         */
 
-        fun getAsciiImage(bitmap: Bitmap): Array<String?> {
+        fun getAsciiImage(bitmap: Bitmap, pixelThreshold:Double): Array<String?> {
             var pixels = getBitmapPixels(bitmap)
             var asciiImage = Array<String?>(bitmap.height) { null }
 
             var pixelGroup = ""
             var row = 0
             var asciiRowCounter = 0
-            while(row < newBitmapHeight * newBitmapWidth){
+            while(row < newBitmapHeight){
                 var col = 0
                 var asciiRow = ""
                 while(col < newBitmapWidth) {
                     pixelGroup = ""
-                    //Upper left, Upper right
-                    pixelGroup += getBinaryPixel(pixels[row + col]).toString()
-                    pixelGroup += getBinaryPixel(pixels[row + col + 1]).toString()
 
-                    //Middle right, Middle left
-                    pixelGroup += getBinaryPixel(pixels[row + col + newBitmapWidth]).toString()
-                    pixelGroup += getBinaryPixel(pixels[row + col + newBitmapWidth + 1]).toString()
+                    //Top
+                    pixelGroup += getBinaryPixel(pixels[row*newBitmapWidth + col],pixelThreshold)
 
-                    //Bottom left, Bottom right
-                    pixelGroup += getBinaryPixel(pixels[row + col + newBitmapWidth * 2]).toString()
-                    pixelGroup += getBinaryPixel(pixels[row + col + newBitmapWidth * 2 + 1]).toString()
+                    //Middle
+                    pixelGroup += getBinaryPixel(pixels[(row+1)*newBitmapWidth + col],pixelThreshold)
+
+                    //Bottom
+                    pixelGroup += getBinaryPixel(pixels[(row+2)*newBitmapWidth + col],pixelThreshold)
 
                     //Safe to result row
-                    asciiRow += getCharacterFromGroup(pixelGroup)
+                    asciiRow += getCharacterFrom3x1Group(pixelGroup)
 
-                    col += 2
+                    //Move one column to the right
+                    col += 1
                 }
 
                 //Safe row to result data
@@ -72,38 +71,49 @@ class ImageToAscii {
                 asciiRowCounter++
 
                 //Move 3 rows down
-                row += newBitmapWidth*3
+                row += 3
             }
             return asciiImage
         }
 
-        /**
-         * This method converts the given bit-string to a single character, for example:
-         * 0 0            1 1            0 0
-         * 1 1 -> '-'  ,  1 1 -> 'P'  ,  0 0 -> '_'   ect.
-         * 0 0            1 0            1 1
-         *
-         * The given string gets split up like this:   01  |  11  | 00
-         *                                          upper  middle  bottom
-         */
-        private fun getCharacterFromGroup(group:String):Char{
+        private fun getCharacterFrom3x1Group(group:String):Char{
+            when (group) {
+                "000" -> return ' '
+                "100" -> return '\''
+                "010" -> return '-'
+                "001" -> return '_'
+                "110" -> return 'P'
+                "101" -> return '1'
+                "011" -> return '='
+                "111" -> return '#'
+            }
+            return '#'
+        }
+
+        private fun getCharacterFrom2x1Group(group:String):Char{
+            when (group) {
+                "00" -> return ' '
+                "10" -> return '^'
+                "01" -> return '_'
+                "11" -> return '#'
+            }
             return '#'
         }
 
         /**
          * This method converts the colors of a pixel to a brightness range:
-         *  0 = black, 255 = white
-         *  Since we can only use binary values, everything above 50% is considered white (1), the rest is black (0).
+         *  0 = black (pixel), 255 = white (no pixel)
+         *  Since we can only use binary values, everything above 50% is considered white (0), the rest is black (1).
          *
          */
-        private fun getBinaryPixel(pixel: Int): Int {
+        private fun getBinaryPixel(pixel: Int, threshold:Double): Int {
 
             var brightness =
                 (0.2126 * Color.red(pixel) + 0.7152 * Color.green(pixel) + 0.0722 * Color.blue(pixel))
-            if (brightness >= 255.0/2.0) {
-                return 1
+            if (brightness >= threshold) {
+                return 0
             }
-            return 0
+            return 1
         }
     }
 }

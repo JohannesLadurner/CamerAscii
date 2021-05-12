@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.graphics.*
 import android.hardware.Camera
 import android.hardware.Camera.PictureCallback
-import android.media.Image
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -98,8 +97,19 @@ class MainActivity : Activity(), PictureCallback, Camera.PreviewCallback {
         var bytes: ByteArray = out.toByteArray()
 
         var options = BitmapFactory.Options()
-        options.inSampleSize = 16
+        options.inSampleSize = 8
         var bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size, options)
+
+
+        // create a matrix for the manipulation
+        // create a matrix for the manipulation
+        val matrix = Matrix()
+        // rotate the Bitmap 90 degrees (counterclockwise)
+        // rotate the Bitmap 90 degrees (counterclockwise)
+        matrix.postRotate(90F)
+
+        // recreate the new Bitmap, swap width and height and apply transform
+        val rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
 
         //Draw on SurfaceView
         /*
@@ -109,7 +119,7 @@ class MainActivity : Activity(), PictureCallback, Camera.PreviewCallback {
         view.draw(canvas)
 
          */
-        var image = ImageToAscii.getAsciiImage(bitmap)
+        var image = ImageToAscii.getAsciiImage(rotatedBitmap,75.0)
 
     }
 
