@@ -15,19 +15,41 @@
         android:onClick="onClick"
         android:text="Make Photo"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/surfaceView" />
+        app:layout_constraintTop_toBottomOf="@+id/surfaceView"
+        app:layout_constraintVertical_bias="0.941" />
 
     <SurfaceView
         android:id="@+id/surfaceView"
-        android:layout_width="351dp"
-        android:layout_height="567dp"
+        android:layout_width="108dp"
+        android:layout_height="119dp"
+        android:layout_marginTop="16dp"
         android:layout_weight="1"
-        app:layout_constraintBottom_toTopOf="@+id/captureFront"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/asciiImage"
+        android:layout_width="374dp"
+        android:layout_height="467dp"
+        android:layout_marginTop="27dp"
+        android:layout_marginBottom="117dp"
+        android:editable="false"
+        android:ems="10"
+        android:fontFamily="monospace"
+        android:inputType="textMultiLine"
+        android:singleLine="false"
+        android:textSize="6dp"
+        android:typeface="monospace"
+        app:layout_constraintBottom_toTopOf="@+id/captureFront"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/surfaceView"
+        app:layout_constraintVertical_bias="0.0" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.SurfaceView
 import android.view.View
+import android.widget.EditText
 import android.widget.Toast
 import java.io.ByteArrayOutputStream
 
@@ -59,7 +60,7 @@ class MainActivity : Activity(), PictureCallback, Camera.PreviewCallback {
             val view = findViewById<SurfaceView>(R.id.surfaceView)
             camera?.setPreviewDisplay(view.holder)
 
-            //Also Possible instead of camera.setPreviewDisplay(holder) (Without surfaceView in xml):
+            //Also Possible instead of camera.setPreviewDisplay(holder) (Without surfaceView in xml): (PREVIEW DOES NOT UPDATE!)
             //val tex = SurfaceTexture(1)
             //camera?.setPreviewTexture(tex)
 
@@ -97,30 +98,29 @@ class MainActivity : Activity(), PictureCallback, Camera.PreviewCallback {
         var bytes: ByteArray = out.toByteArray()
 
         var options = BitmapFactory.Options()
-        options.inSampleSize = 8
+        options.inSampleSize = 8 //Quality of the bitmap, for example 4 means width/height is 1/4 of the original image, and 1/16 of the pixels. Has to be a power of 2.
         var bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size, options)
 
-
-        // create a matrix for the manipulation
         // create a matrix for the manipulation
         val matrix = Matrix()
-        // rotate the Bitmap 90 degrees (counterclockwise)
         // rotate the Bitmap 90 degrees (counterclockwise)
         matrix.postRotate(90F)
 
         // recreate the new Bitmap, swap width and height and apply transform
         val rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
 
-        //Draw on SurfaceView
-        /*
-        val mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
-        val canvas = Canvas(mutableBitmap)
-        var view = findViewById<SurfaceView>(R.id.surfaceView)
-        view.draw(canvas)
-
-         */
+        //Get Image
         var image = ImageToAscii.getAsciiImage(rotatedBitmap,75.0)
+        printAsciiImageOnView(image)
+    }
 
+    fun printAsciiImageOnView(image:Array<String?>){
+        var textView = findViewById<EditText>(R.id.asciiImage)
+        var newText = ""
+        for(line in image){
+            newText += line + "\n"
+        }
+        textView.setText(newText)
     }
 
 

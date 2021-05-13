@@ -39,7 +39,7 @@ class ImageToAscii {
 
         fun getAsciiImage(bitmap: Bitmap, pixelThreshold:Double): Array<String?> {
             var pixels = getBitmapPixels(bitmap)
-            var asciiImage = Array<String?>(bitmap.height) { null }
+            var asciiImage = Array<String?>(bitmap.height / 3) { null }
 
             var pixelGroup = ""
             var row = 0
