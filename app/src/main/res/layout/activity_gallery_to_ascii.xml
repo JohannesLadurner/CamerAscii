@@ -2,29 +2,26 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="#EAD6BD"
-    android:id="@+id/main"
-    >
+    tools:context=".GalleryToAsciiActivity">
 
     <Button
-        android:id="@+id/captureFront"
+        android:id="@+id/saveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:onClick="onClick"
-        android:text="Make Photo"
+        android:text="@string/save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/surfaceView"
+        app:layout_constraintTop_toBottomOf="@+id/originalImage"
         app:layout_constraintVertical_bias="0.941" />
 
-    <SurfaceView
-        android:id="@+id/surfaceView"
+    <ImageView
+        android:id="@+id/originalImage"
         android:layout_width="108dp"
         android:layout_height="119dp"
         android:layout_marginTop="16dp"
@@ -35,7 +32,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/asciiImage"
+        android:id="@+id/asciiPrev"
         android:layout_width="374dp"
         android:layout_height="467dp"
         android:layout_marginTop="27dp"
@@ -51,7 +48,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/surfaceView"
+        app:layout_constraintTop_toBottomOf="@+id/originalImage"
         app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

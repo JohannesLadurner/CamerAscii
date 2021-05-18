@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.graphics.*
 import android.hardware.Camera
 import android.hardware.Camera.PictureCallback
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -15,14 +14,12 @@ import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import java.io.ByteArrayOutputStream
-import java.io.InputStream
 
 
 class MainActivity : Activity(), PictureCallback, Camera.PreviewCallback {
 
     private val DEBUG_TAG: String? = "MakePhotoActivity"
     private var camera: Camera? = null
-    var selectedImage:Bitmap? = null
     override fun onStart() {
         super.onStart()
         //Check if user has to give permission to access the camera, if not ask him!
@@ -41,18 +38,6 @@ class MainActivity : Activity(), PictureCallback, Camera.PreviewCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        /*
-        Get Picture from Gallery and transform it to Bitmap
-        Extra view machen, von original ausgehen
-         */
-        val intent = intent
-        val imageUri = intent.extras?.getParcelable<Uri>("Picture")
-        val imageStream = imageUri?.let { contentResolver.openInputStream(it) }
-        var options = BitmapFactory.Options()
-        options.inSampleSize = 16//Quality of the bitmap, for example 4 means width/height is 1/4 of the original image, and 1/16 of the pixels. Has to be a power of 2.
-        selectedImage = BitmapFactory.decodeStream(imageStream,null,options)
-
 
         // do we have a camera?
         if (!packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
@@ -124,11 +109,11 @@ class MainActivity : Activity(), PictureCallback, Camera.PreviewCallback {
         val rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
 
         //Get Image
-        var image = ImageToAscii.getAsciiImage(selectedImage!!,75.0)
+        var image = ImageToAscii.getAsciiImage(rotatedBitmap,75.0)
         printAsciiImageOnView(image)
     }
 
-    fun printAsciiImageOnView(image:Array<String?>){
+    fun  printAsciiImageOnView(image:Array<String?>){
         var textView = findViewById<EditText>(R.id.asciiImage)
         var newText = ""
         for(line in image){

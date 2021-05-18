@@ -39,7 +39,7 @@ class StartActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
                 val imageUri: Uri? = data?.data
-                val intent = Intent(this,MainActivity::class.java)
+                val intent = Intent(this,GalleryToAsciiActivity::class.java)
                 intent.putExtra("Picture",imageUri)
                 startActivity(intent)
 
