@@ -41,6 +41,9 @@ class MainActivity : Activity(), PictureCallback, Camera.PreviewCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        /*
+        Get Picture from Gallery and transform it to Bitmap
+         */
         val intent = intent
         val imageUri = intent.extras?.getParcelable<Uri>("Picture")
         val imageStream = imageUri?.let { contentResolver.openInputStream(it) }
