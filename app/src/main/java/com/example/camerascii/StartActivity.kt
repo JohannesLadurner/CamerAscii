@@ -1,10 +1,17 @@
 package com.example.camerascii
 
+import android.app.Activity
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import java.io.FileNotFoundException
+import java.io.InputStream
 
+val SELECT_PICTURE = 200
 class StartActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,7 +26,18 @@ class StartActivity : AppCompatActivity() {
             val i = Intent()
             i.type = "image/*"
             i.action = Intent.ACTION_GET_CONTENT
-            startActivityForResult(Intent.createChooser(i, "Select Picture"), 100);
+            startActivityForResult(i, SELECT_PICTURE);
+
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+                val imageUri: Uri? = data?.data
+                val intent = Intent(this,MainActivity::class.java)
+                intent.putExtra("Picture",imageUri)
+                startActivity(intent)
 
         }
     }
