@@ -22,6 +22,7 @@ class MainActivity : Activity(), PictureCallback, Camera.PreviewCallback {
 
     private val DEBUG_TAG: String? = "MakePhotoActivity"
     private var camera: Camera? = null
+    var selectedImage:Bitmap? = null
     override fun onStart() {
         super.onStart()
         //Check if user has to give permission to access the camera, if not ask him!
@@ -43,11 +44,15 @@ class MainActivity : Activity(), PictureCallback, Camera.PreviewCallback {
 
         /*
         Get Picture from Gallery and transform it to Bitmap
+        Extra view machen, von original ausgehen
          */
         val intent = intent
         val imageUri = intent.extras?.getParcelable<Uri>("Picture")
         val imageStream = imageUri?.let { contentResolver.openInputStream(it) }
-        val selectedImage = BitmapFactory.decodeStream(imageStream)
+        var options = BitmapFactory.Options()
+        options.inSampleSize = 16//Quality of the bitmap, for example 4 means width/height is 1/4 of the original image, and 1/16 of the pixels. Has to be a power of 2.
+        selectedImage = BitmapFactory.decodeStream(imageStream,null,options)
+
 
         // do we have a camera?
         if (!packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
@@ -119,7 +124,7 @@ class MainActivity : Activity(), PictureCallback, Camera.PreviewCallback {
         val rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
 
         //Get Image
-        var image = ImageToAscii.getAsciiImage(rotatedBitmap,75.0)
+        var image = ImageToAscii.getAsciiImage(selectedImage!!,75.0)
         printAsciiImageOnView(image)
     }
 
