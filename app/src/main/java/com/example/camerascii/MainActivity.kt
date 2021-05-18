@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.graphics.*
 import android.hardware.Camera
 import android.hardware.Camera.PictureCallback
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -15,14 +14,12 @@ import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import java.io.ByteArrayOutputStream
-import java.io.InputStream
 
 
 class MainActivity : Activity(), PictureCallback, Camera.PreviewCallback {
 
     private val DEBUG_TAG: String? = "MakePhotoActivity"
     private var camera: Camera? = null
-
     override fun onStart() {
         super.onStart()
         //Check if user has to give permission to access the camera, if not ask him!
@@ -116,7 +113,7 @@ class MainActivity : Activity(), PictureCallback, Camera.PreviewCallback {
         printAsciiImageOnView(image)
     }
 
-    fun printAsciiImageOnView(image:Array<String?>){
+    fun  printAsciiImageOnView(image:Array<String?>){
         var textView = findViewById<EditText>(R.id.asciiImage)
         var newText = ""
         for(line in image){
