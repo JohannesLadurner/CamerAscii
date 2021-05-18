@@ -112,7 +112,7 @@ class MainActivity : Activity(), PictureCallback, Camera.PreviewCallback {
         val rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
 
         //Get Image
-        var image = ImageToAscii.getAsciiImage(selectedImage!!,75.0)
+        var image = ImageToAscii.getAsciiImage(rotatedBitmap,75.0)
         printAsciiImageOnView(image)
     }
 
