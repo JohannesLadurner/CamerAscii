@@ -14,13 +14,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:onClick="onClick"
         android:text="Make Photo"
+        android:onClick="onClick"
+        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/surfaceView"
+        app:layout_constraintTop_toBottomOf="@+id/layouttwo"
         app:layout_constraintVertical_bias="0.941" />
 
     <SurfaceView
@@ -34,24 +35,31 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/asciiImage"
-        android:layout_width="374dp"
-        android:layout_height="467dp"
-        android:layout_marginTop="27dp"
-        android:layout_marginBottom="117dp"
-        android:editable="false"
-        android:ems="10"
-        android:fontFamily="monospace"
-        android:inputType="textMultiLine"
-        android:singleLine="false"
-        android:textSize="6dp"
-        android:typeface="monospace"
-        app:layout_constraintBottom_toTopOf="@+id/captureFront"
+    <LinearLayout
+        android:id="@+id/layouttwo"
+
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/surfaceView"
+        app:layout_constraintBottom_toTopOf="@id/captureFront"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/surfaceView"
-        app:layout_constraintVertical_bias="0.0" />
+        tools:layout_editor_absoluteY="356dp">
+
+        <EditText
+            android:id="@+id/asciiImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:editable="false"
+            android:ems="10"
+            android:textColor="#000000"
+            android:enabled="false"
+            android:fontFamily="monospace"
+            android:inputType="textMultiLine"
+            android:singleLine="false"
+            android:textSize="6dp"
+            android:typeface="monospace" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
