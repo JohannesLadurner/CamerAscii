@@ -9,6 +9,7 @@ import android.hardware.Camera.PictureCallback
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
 import android.view.SurfaceView
 import android.view.View
 import android.widget.EditText
@@ -115,6 +116,8 @@ class MainActivity : Activity(), PictureCallback, Camera.PreviewCallback {
 
     fun  printAsciiImageOnView(image:Array<String?>){
         var textView = findViewById<EditText>(R.id.asciiImage)
+        var pixelPerChar:Float = textView.width.toFloat() / image[0]!!.length
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, pixelPerChar*1.6f)
         var newText = ""
         for(line in image){
             newText += line + "\n"
