@@ -98,7 +98,7 @@ class MainActivity : Activity(), PictureCallback, Camera.PreviewCallback {
         var bytes: ByteArray = out.toByteArray()
 
         var options = BitmapFactory.Options()
-        options.inSampleSize = 8 //Quality of the bitmap, for example 4 means width/height is 1/4 of the original image, and 1/16 of the pixels. Has to be a power of 2.
+        options.inSampleSize = 4 //Quality of the bitmap, for example 4 means width/height is 1/4 of the original image, and 1/16 of the pixels. Has to be a power of 2.
         var bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size, options)
 
         // create a matrix for the manipulation
@@ -116,8 +116,10 @@ class MainActivity : Activity(), PictureCallback, Camera.PreviewCallback {
 
     fun  printAsciiImageOnView(image:Array<String?>){
         var textView = findViewById<EditText>(R.id.asciiImage)
-        var pixelPerChar:Float = textView.width.toFloat() / image[0]!!.length
+        var pixelPerChar:Float = (textView.resources.displayMetrics.widthPixels.toFloat() / image[0]!!.length)
+
         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, pixelPerChar*1.6f)
+
         var newText = ""
         for(line in image){
             newText += line + "\n"
