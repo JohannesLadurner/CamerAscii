@@ -3,6 +3,6 @@
     <string name="from_camera">From Camera</string>
     <string name="from_gallery">From Gallery</string>
     <string name="save">Save</string>
-    <string name="brightness">Brightness</string>
-    <string name="sample_size">Sample Size</string>
+    <string name="brightness">Brightness = 75</string>
+    <string name="sample_size">Sample Size = 8</string>
 </resources>

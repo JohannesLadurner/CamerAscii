@@ -23,8 +23,8 @@ class MainActivity : Activity(), PictureCallback, Camera.PreviewCallback {
 
     private val DEBUG_TAG: String? = "MakePhotoActivity"
     private var camera: Camera? = null
-    var sampleSize = 8
-    var brightness = 75
+    private var sampleSize = 8
+    private var brightness = 75
     override fun onStart() {
         super.onStart()
         //Check if user has to give permission to access the camera, if not ask him!
@@ -75,7 +75,9 @@ class MainActivity : Activity(), PictureCallback, Camera.PreviewCallback {
 
             }
         })
-
+        /*
+       change brightness of the Image in the lower seekbar
+        */
         val brightText = findViewById<TextView>(R.id.textBrightness)
         findViewById<SeekBar>(R.id.brightness).setOnSeekBarChangeListener(object :SeekBar.OnSeekBarChangeListener {
 
