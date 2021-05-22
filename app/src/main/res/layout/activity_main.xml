@@ -52,25 +52,31 @@
 
         android:layout_width="match_parent"
         android:layout_height="400dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="#FFFFFF"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/surfaceView"
         app:layout_constraintBottom_toTopOf="@id/captureFront"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="356dp">
+        app:layout_constraintTop_toBottomOf="@id/surfaceView">
 
         <EditText
             android:id="@+id/asciiImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+
             android:background="#FFFFFF"
             android:editable="false"
+
             android:enabled="false"
             android:fontFamily="monospace"
             android:inputType="textMultiLine"
             android:singleLine="false"
             android:textColor="#000000"
-            android:textSize="6sp"
+
+            android:textSize="6dp"
+
             android:typeface="monospace" />
     </LinearLayout>
 
