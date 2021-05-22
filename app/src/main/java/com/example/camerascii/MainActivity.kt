@@ -13,6 +13,8 @@ import android.util.TypedValue
 import android.view.SurfaceView
 import android.view.View
 import android.widget.EditText
+import android.widget.SeekBar
+import android.widget.TextView
 import android.widget.Toast
 import java.io.ByteArrayOutputStream
 
@@ -21,6 +23,8 @@ class MainActivity : Activity(), PictureCallback, Camera.PreviewCallback {
 
     private val DEBUG_TAG: String? = "MakePhotoActivity"
     private var camera: Camera? = null
+    private var sampleSize = 8
+    private var brightness = 75
     override fun onStart() {
         super.onStart()
         //Check if user has to give permission to access the camera, if not ask him!
@@ -44,7 +48,56 @@ class MainActivity : Activity(), PictureCallback, Camera.PreviewCallback {
         if (!packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
             Toast.makeText(this, "No camera on this device", Toast.LENGTH_LONG).show()
         }
+
+        /*
+        change sampleSize of the Image in the upper seekbar
+         */
+        val textSize = findViewById<TextView>(R.id.textSample)
+        findViewById<SeekBar>(R.id.sampleSize).setOnSeekBarChangeListener(object :SeekBar.OnSeekBarChangeListener {
+
+            override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
+                // Display the current progress of SeekBar
+                when(i){
+                    0 -> sampleSize = 4
+                    1 -> sampleSize = 8
+                    2 -> sampleSize = 16
+                    3 -> sampleSize = 32
+                    4 -> sampleSize = 64
+                }
+                textSize.text = "Sample Size = $sampleSize"
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+
+            }
+        })
+        /*
+       change brightness of the Image in the lower seekbar
+        */
+        val brightText = findViewById<TextView>(R.id.textBrightness)
+        findViewById<SeekBar>(R.id.brightness).setOnSeekBarChangeListener(object :SeekBar.OnSeekBarChangeListener {
+
+            override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
+                // Display the current progress of SeekBar
+
+                brightText.text = "Brightness = $i"
+                brightness = i
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+
+            }
+        })
     }
+
     fun onClick(view: View?) {
         initCam()
         //camera?.takePicture(null, null, this)
@@ -98,7 +151,7 @@ class MainActivity : Activity(), PictureCallback, Camera.PreviewCallback {
         var bytes: ByteArray = out.toByteArray()
 
         var options = BitmapFactory.Options()
-        options.inSampleSize = 8 //Quality of the bitmap, for example 4 means width/height is 1/4 of the original image, and 1/16 of the pixels. Has to be a power of 2.
+        options.inSampleSize = sampleSize //Quality of the bitmap, for example 4 means width/height is 1/4 of the original image, and 1/16 of the pixels. Has to be a power of 2.
         var bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size, options)
 
         // create a matrix for the manipulation
@@ -110,12 +163,15 @@ class MainActivity : Activity(), PictureCallback, Camera.PreviewCallback {
         val rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
 
         //Get Image
-        var image = ImageToAscii.getAsciiImage(rotatedBitmap,75.0)
+        var image = ImageToAscii.getAsciiImage(rotatedBitmap,brightness.toDouble())
         printAsciiImageOnView(image)
     }
 
     fun  printAsciiImageOnView(image:Array<String?>){
         var textView = findViewById<EditText>(R.id.asciiImage)
+
+
+
         var pixelPerChar:Float = textView.width.toFloat() / image[0]!!.length
         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, pixelPerChar*1.75f)
         var newText = ""
