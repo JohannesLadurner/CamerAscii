@@ -77,6 +77,8 @@
     <SeekBar
         android:id="@+id/sampleSize"
         android:layout_width="150dp"
+        android:max="4"
+        android:progress="8"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toRightOf="@id/surfaceView"
@@ -88,6 +90,8 @@
     <SeekBar
         android:id="@+id/brightness"
         android:layout_width="150dp"
+        android:max="200"
+        android:progress="75"
         android:layout_height="wrap_content"
         tools:layout_editor_absoluteX="259dp"
         app:layout_constraintTop_toBottomOf="@id/sampleSize"
