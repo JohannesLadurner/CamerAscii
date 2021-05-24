@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
+import android.view.SurfaceHolder
 import android.view.SurfaceView
 import android.view.View
 import android.widget.EditText
@@ -19,45 +20,35 @@ import android.widget.Toast
 import java.io.ByteArrayOutputStream
 
 
-class CameraActivity : Activity(), PictureCallback, Camera.PreviewCallback {
+class CameraActivity : Activity(), PictureCallback, Camera.PreviewCallback, SurfaceHolder.Callback {
 
     private val DEBUG_TAG: String? = "MakePhotoActivity"
     private var camera: Camera? = null
     private var sampleSize = 8
     private var brightness = 75
-    override fun onStart() {
-        super.onStart()
-        //Check if user has to give permission to access the camera, if not ask him!
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val hasCameraPermission = checkSelfPermission(Manifest.permission.CAMERA)
-            val permissions: MutableList<String> = ArrayList()
-            if (hasCameraPermission != PackageManager.PERMISSION_GRANTED) {
-                permissions.add(Manifest.permission.CAMERA)
-            }
-            if (!permissions.isEmpty()) {
-                requestPermissions(permissions.toTypedArray(), 111)
-            }
-        }
-    }
+    private lateinit var camView: SurfaceView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera)
-
         // do we have a camera?
         if (!packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
             Toast.makeText(this, "No camera on this device", Toast.LENGTH_LONG).show()
         }
+        camView = findViewById<SurfaceView>(R.id.surfaceViewCamera)
+        var holder = camView.holder
+        holder.addCallback(this)
 
         /*
         change sampleSize of the Image in the upper seekbar
          */
         val textSize = findViewById<TextView>(R.id.textSampleCamera)
-        findViewById<SeekBar>(R.id.sampleSizeCamera).setOnSeekBarChangeListener(object :SeekBar.OnSeekBarChangeListener {
+        findViewById<SeekBar>(R.id.sampleSizeCamera).setOnSeekBarChangeListener(object :
+            SeekBar.OnSeekBarChangeListener {
 
             override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
                 // Display the current progress of SeekBar
-                when(i){
+                when (i) {
                     0 -> sampleSize = 4
                     1 -> sampleSize = 8
                     2 -> sampleSize = 16
@@ -79,7 +70,8 @@ class CameraActivity : Activity(), PictureCallback, Camera.PreviewCallback {
        change brightness of the Image in the lower seekbar
         */
         val brightText = findViewById<TextView>(R.id.textBrightnessCamera)
-        findViewById<SeekBar>(R.id.brightnessCamera).setOnSeekBarChangeListener(object :SeekBar.OnSeekBarChangeListener {
+        findViewById<SeekBar>(R.id.brightnessCamera).setOnSeekBarChangeListener(object :
+            SeekBar.OnSeekBarChangeListener {
 
             override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
                 // Display the current progress of SeekBar
@@ -98,40 +90,30 @@ class CameraActivity : Activity(), PictureCallback, Camera.PreviewCallback {
         })
     }
 
-    fun onClick(view: View?) {
-        initCam()
-        //camera?.takePicture(null, null, this)
+    override fun surfaceChanged(p0: SurfaceHolder, p1: Int, p2: Int, p3: Int) {
+        camera?.startPreview()
     }
 
-    fun initCam(){
+    override fun surfaceDestroyed(p0: SurfaceHolder) {
+        camera?.stopPreview()
+        //camera?.release()
+        //camera=null
+    }
+
+    override fun surfaceCreated(p0: SurfaceHolder) {
         try {
-            if(camera != null){
+            if (camera != null) {
                 camera?.release()
                 camera = null
             }
             camera = Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK)
-            val view = findViewById<SurfaceView>(R.id.surfaceViewCamera)
-            camera?.setPreviewDisplay(view.holder)
-
-            //Also Possible instead of camera.setPreviewDisplay(holder) (Without surfaceView in xml): (PREVIEW DOES NOT UPDATE!)
-            //val tex = SurfaceTexture(1)
-            //camera?.setPreviewTexture(tex)
-
+            camera?.setPreviewDisplay(camView.holder)
             camera?.setPreviewCallback(this)
             camera?.setDisplayOrientation(90) //Set to Vertical
-            camera?.startPreview()
         } catch (e: Exception) {
             Log.e(DEBUG_TAG, "failed to open Camera")
             e.printStackTrace()
         }
-    }
-
-    override fun onPause() {
-        if (camera != null) {
-            camera?.release()
-            camera = null
-        }
-        super.onPause()
     }
 
     override fun onPictureTaken(data: ByteArray?, camera: Camera?) {
@@ -151,7 +133,8 @@ class CameraActivity : Activity(), PictureCallback, Camera.PreviewCallback {
         var bytes: ByteArray = out.toByteArray()
 
         var options = BitmapFactory.Options()
-        options.inSampleSize = sampleSize //Quality of the bitmap, for example 4 means width/height is 1/4 of the original image, and 1/16 of the pixels. Has to be a power of 2.
+        options.inSampleSize =
+            sampleSize //Quality of the bitmap, for example 4 means width/height is 1/4 of the original image, and 1/16 of the pixels. Has to be a power of 2.
         var bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size, options)
 
         // create a matrix for the manipulation
@@ -160,32 +143,26 @@ class CameraActivity : Activity(), PictureCallback, Camera.PreviewCallback {
         matrix.postRotate(90F)
 
         // recreate the new Bitmap, swap width and height and apply transform
-        val rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+        val rotatedBitmap =
+            Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
 
         //Get Image
-        var image = ImageToAscii.getAsciiImage(rotatedBitmap,brightness.toDouble())
+        var image = ImageToAscii.getAsciiImage(rotatedBitmap, brightness.toDouble())
         printAsciiImageOnView(image)
     }
 
-    fun  printAsciiImageOnView(image:Array<String?>){
+    fun printAsciiImageOnView(image: Array<String?>) {
         var textView = findViewById<EditText>(R.id.asciiImageCamera)
 
 
-
-        var pixelPerChar:Float = textView.width.toFloat() / image[0]!!.length
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, pixelPerChar*1.75f)
+        var pixelPerChar: Float = textView.width.toFloat() / image[0]!!.length
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, pixelPerChar * 1.75f)
         var newText = ""
-        for(line in image){
+        for (line in image) {
             newText += line + "\n"
         }
         textView.setHorizontallyScrolling(true) //Allow text to go outside the view field in a single line
         textView.setText(newText)
-    }
-
-    //Calls, when the back button on your phone is pressed
-    override fun onBackPressed() {
-        super.onBackPressed()
-        camera?.stopPreview()
     }
 }
 

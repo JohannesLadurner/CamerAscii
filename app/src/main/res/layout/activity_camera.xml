@@ -27,7 +27,6 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="Make Photo"
-        android:onClick="onClick"
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.488"
