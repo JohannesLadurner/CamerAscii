@@ -19,7 +19,7 @@ import android.widget.Toast
 import java.io.ByteArrayOutputStream
 
 
-class MainActivity : Activity(), PictureCallback, Camera.PreviewCallback {
+class CameraActivity : Activity(), PictureCallback, Camera.PreviewCallback {
 
     private val DEBUG_TAG: String? = "MakePhotoActivity"
     private var camera: Camera? = null
@@ -42,7 +42,7 @@ class MainActivity : Activity(), PictureCallback, Camera.PreviewCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_camera)
 
         // do we have a camera?
         if (!packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
@@ -52,8 +52,8 @@ class MainActivity : Activity(), PictureCallback, Camera.PreviewCallback {
         /*
         change sampleSize of the Image in the upper seekbar
          */
-        val textSize = findViewById<TextView>(R.id.textSample)
-        findViewById<SeekBar>(R.id.sampleSize).setOnSeekBarChangeListener(object :SeekBar.OnSeekBarChangeListener {
+        val textSize = findViewById<TextView>(R.id.textSampleCamera)
+        findViewById<SeekBar>(R.id.sampleSizeCamera).setOnSeekBarChangeListener(object :SeekBar.OnSeekBarChangeListener {
 
             override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
                 // Display the current progress of SeekBar
@@ -78,8 +78,8 @@ class MainActivity : Activity(), PictureCallback, Camera.PreviewCallback {
         /*
        change brightness of the Image in the lower seekbar
         */
-        val brightText = findViewById<TextView>(R.id.textBrightness)
-        findViewById<SeekBar>(R.id.brightness).setOnSeekBarChangeListener(object :SeekBar.OnSeekBarChangeListener {
+        val brightText = findViewById<TextView>(R.id.textBrightnessCamera)
+        findViewById<SeekBar>(R.id.brightnessCamera).setOnSeekBarChangeListener(object :SeekBar.OnSeekBarChangeListener {
 
             override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
                 // Display the current progress of SeekBar
@@ -110,7 +110,7 @@ class MainActivity : Activity(), PictureCallback, Camera.PreviewCallback {
                 camera = null
             }
             camera = Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK)
-            val view = findViewById<SurfaceView>(R.id.surfaceView)
+            val view = findViewById<SurfaceView>(R.id.surfaceViewCamera)
             camera?.setPreviewDisplay(view.holder)
 
             //Also Possible instead of camera.setPreviewDisplay(holder) (Without surfaceView in xml): (PREVIEW DOES NOT UPDATE!)
@@ -168,7 +168,7 @@ class MainActivity : Activity(), PictureCallback, Camera.PreviewCallback {
     }
 
     fun  printAsciiImageOnView(image:Array<String?>){
-        var textView = findViewById<EditText>(R.id.asciiImage)
+        var textView = findViewById<EditText>(R.id.asciiImageCamera)
 
 
 

@@ -2,14 +2,10 @@ package com.example.camerascii
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import java.io.FileNotFoundException
-import java.io.InputStream
 
 val SELECT_PICTURE = 200
 class StartActivity : AppCompatActivity() {
@@ -19,7 +15,7 @@ class StartActivity : AppCompatActivity() {
 
         //FROMCAMERA button, switch to camera
         findViewById<Button>(R.id.fromCamera).setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, CameraActivity::class.java)
             startActivity(intent)
         }
 

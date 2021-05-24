@@ -1,18 +1,14 @@
 package com.example.camerascii
 
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.TypedValue
-import android.view.SurfaceView
-import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
-import java.io.InputStream
 
 private var sampleSize = 8
 private var brightness = 75
@@ -22,7 +18,7 @@ private var originalImage: Uri? = null
 class GalleryToAsciiActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_gallery_to_ascii)
+        setContentView(R.layout.activity_gallery)
 
         //Get the original Image
         val intent = intent
@@ -31,7 +27,7 @@ class GalleryToAsciiActivity : AppCompatActivity() {
         /*
         Preview of the original Image
          */
-        findViewById<ImageView>(R.id.originalImage).setImageURI(originalImage)
+        findViewById<ImageView>(R.id.originalImageGallery).setImageURI(originalImage)
         galleryToAscii()
 
         /*
@@ -96,7 +92,7 @@ class GalleryToAsciiActivity : AppCompatActivity() {
     }
 
     fun printAsciiImageOnView(image:Array<String?>){
-        var textView = findViewById<EditText>(R.id.asciiPrev)
+        var textView = findViewById<EditText>(R.id.asciiImageGallery)
         var pixelPerChar:Float = (textView.resources.displayMetrics.widthPixels.toFloat() / image[0]!!.length)
 
         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, pixelPerChar*1.6f)
