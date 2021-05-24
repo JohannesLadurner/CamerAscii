@@ -182,6 +182,10 @@ class CameraActivity : Activity(), PictureCallback, Camera.PreviewCallback {
         textView.setText(newText)
     }
 
-
+    //Calls, when the back button on your phone is pressed
+    override fun onBackPressed() {
+        super.onBackPressed()
+        camera?.stopPreview()
+    }
 }
 
