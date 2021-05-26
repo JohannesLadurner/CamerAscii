@@ -147,7 +147,7 @@ class CameraActivity : Activity(), PictureCallback, Camera.PreviewCallback, Surf
             Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
 
         //Get Image
-        var image = ImageToAscii.getAsciiImage(rotatedBitmap, brightness.toDouble())
+        var image = ImageToAscii.getAsciiImage(rotatedBitmap, brightness.toDouble(), true)
         printAsciiImageOnView(image)
     }
 

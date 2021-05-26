@@ -87,7 +87,7 @@ class GalleryToAsciiActivity : AppCompatActivity() {
         var options = BitmapFactory.Options()
         options.inSampleSize = sampleSize //Quality of the bitmap, for example 4 means width/height is 1/4 of the original image, and 1/16 of the pixels. Has to be a power of 2.
         var selectedImage = BitmapFactory.decodeStream(original,null,options)
-        var image = ImageToAscii.getAsciiImage(selectedImage!!, brightness.toDouble())
+        var image = ImageToAscii.getAsciiImage(selectedImage!!, brightness.toDouble(), true)
         printAsciiImageOnView(image)
     }
 

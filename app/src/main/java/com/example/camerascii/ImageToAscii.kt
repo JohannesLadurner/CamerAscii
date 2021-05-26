@@ -37,7 +37,7 @@ class ImageToAscii {
             6. Turn fields into chars
         */
 
-        fun getAsciiImage(bitmap: Bitmap, pixelThreshold:Double): Array<String?> {
+        fun getAsciiImage(bitmap : Bitmap, pixelThreshold : Double, drawDarkPixels : Boolean): Array<String?> {
             var pixels = getBitmapPixels(bitmap)
             var asciiImage = Array<String?>(bitmap.height / 3) { null }
 
@@ -51,13 +51,13 @@ class ImageToAscii {
                     pixelGroup = ""
 
                     //Top
-                    pixelGroup += getBinaryPixel(pixels[row*newBitmapWidth + col],pixelThreshold)
+                    pixelGroup += getBinaryPixel(pixels[row*newBitmapWidth + col],pixelThreshold, drawDarkPixels)
 
                     //Middle
-                    pixelGroup += getBinaryPixel(pixels[(row+1)*newBitmapWidth + col],pixelThreshold)
+                    pixelGroup += getBinaryPixel(pixels[(row+1)*newBitmapWidth + col],pixelThreshold, drawDarkPixels)
 
                     //Bottom
-                    pixelGroup += getBinaryPixel(pixels[(row+2)*newBitmapWidth + col],pixelThreshold)
+                    pixelGroup += getBinaryPixel(pixels[(row+2)*newBitmapWidth + col],pixelThreshold, drawDarkPixels)
 
                     //Safe to result row
                     asciiRow += getCharacterFrom3x1Group(pixelGroup)
@@ -90,30 +90,28 @@ class ImageToAscii {
             return '#'
         }
 
-        private fun getCharacterFrom2x1Group(group:String):Char{
-            when (group) {
-                "00" -> return ' '
-                "10" -> return '^'
-                "01" -> return '_'
-                "11" -> return '#'
-            }
-            return '#'
-        }
-
         /**
          * This method converts the colors of a pixel to a brightness range:
-         *  0 = black (pixel), 255 = white (no pixel)
-         *  Since we can only use binary values, everything above 50% is considered white (0), the rest is black (1).
+         *  0 = black, 255 = white
+         *  Since we can only use binary values, everything above 50% is considered white (0), the rest is black.
+         *  Depending on drawDarkPixels, white pixels or black pixels get drawn.
          *
          */
-        private fun getBinaryPixel(pixel: Int, threshold:Double): Int {
+        private fun getBinaryPixel(pixel: Int, threshold:Double, drawDarkPixels : Boolean): Int {
 
-            var brightness =
-                (0.2126 * Color.red(pixel) + 0.7152 * Color.green(pixel) + 0.0722 * Color.blue(pixel))
-            if (brightness >= threshold) {
+            var brightness = (0.2126 * Color.red(pixel) + 0.7152 * Color.green(pixel) + 0.0722 * Color.blue(pixel))
+
+            if(drawDarkPixels){ //Mark the Dark Pixels as 1
+                if (brightness >= threshold) {
+                    return 0
+                }
+                return 1
+            } else { //Mark the White Pixels as 1
+                if (brightness >= threshold) {
+                    return 1
+                }
                 return 0
             }
-            return 1
         }
     }
 }
