@@ -1,14 +1,16 @@
 package com.example.camerascii
 
+import android.app.Dialog
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.TypedValue
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.SeekBar
-import android.widget.TextView
+import android.widget.*
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.android.synthetic.main.settings_gallery_dialoge.*
 
 private var sampleSize = 8
 private var brightness = 75
@@ -16,6 +18,9 @@ private var brightness = 75
 
 private var originalImage: Uri? = null
 class GalleryToAsciiActivity : AppCompatActivity() {
+    var drawDarkPixels = true
+    var imgRotation = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gallery)
@@ -80,6 +85,25 @@ class GalleryToAsciiActivity : AppCompatActivity() {
 
             }
         })
+
+        findViewById<FloatingActionButton>(R.id.settingsGalleryButton).setOnClickListener(){
+            val dialog = Dialog(this)
+            dialog.setContentView(R.layout.settings_gallery_dialoge)
+            dialog.findViewById<Switch>(R.id.switchBlackWhiteGallery).isChecked = drawDarkPixels
+
+            dialog.findViewById<FloatingActionButton>(R.id.rotateImage).setOnClickListener(){
+                imgRotation = imgRotation - 90
+                if(imgRotation == 0)
+                    imgRotation = 360
+                galleryToAscii()
+            }
+            dialog.findViewById<Switch>(R.id.switchBlackWhiteGallery).setOnCheckedChangeListener { compoundButton, isActive ->
+                drawDarkPixels = isActive
+                galleryToAscii()
+            }
+            dialog.show()
+        }
+
     }
     //Transform the Original Image to Ascii
     fun galleryToAscii(){
@@ -87,7 +111,16 @@ class GalleryToAsciiActivity : AppCompatActivity() {
         var options = BitmapFactory.Options()
         options.inSampleSize = sampleSize //Quality of the bitmap, for example 4 means width/height is 1/4 of the original image, and 1/16 of the pixels. Has to be a power of 2.
         var selectedImage = BitmapFactory.decodeStream(original,null,options)
-        var image = ImageToAscii.getAsciiImage(selectedImage!!, brightness.toDouble(), true)
+        // create a matrix for the manipulation
+        val matrix = Matrix()
+        // rotate the Bitmap 90 degrees (counterclockwise)
+        matrix.postRotate(imgRotation.toFloat())
+
+        // recreate the new Bitmap, swap width and height and apply transform
+        val rotatedBitmap =
+            Bitmap.createBitmap(selectedImage!!, 0, 0, selectedImage.width, selectedImage.height, matrix, true)
+
+        var image = ImageToAscii.getAsciiImage(rotatedBitmap, brightness.toDouble(), drawDarkPixels)
         printAsciiImageOnView(image)
     }
 

@@ -7,11 +7,11 @@
     android:layout_height="match_parent">
 
     <Switch
-        android:id="@+id/switchBlackWithe"
+        android:id="@+id/switchBlackWhiteCamera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:checked="false"
-        android:text="@string/draw_black_pixels"
+        android:text="@string/draw_dark_pixels"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/settingsCamera"
-        app:layout_constraintBottom_toTopOf="@id/switchBlackWithe"
+        app:layout_constraintBottom_toTopOf="@id/switchBlackWhiteCamera"
         android:text="Flash"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

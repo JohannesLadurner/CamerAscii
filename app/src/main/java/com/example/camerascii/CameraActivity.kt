@@ -1,6 +1,7 @@
 package com.example.camerascii
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.pm.PackageManager
 import android.graphics.*
 import android.hardware.Camera
@@ -13,6 +14,7 @@ import android.view.SurfaceHolder
 import android.view.SurfaceView
 import android.widget.*
 import androidx.annotation.RequiresApi
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.ByteArrayOutputStream
 
 
@@ -23,6 +25,8 @@ class CameraActivity : Activity(), PictureCallback, Camera.PreviewCallback, Surf
     private var sampleSize = 8
     private var brightness = 75
     private lateinit var camView: SurfaceView
+    var flashIsOn : Boolean = false
+    var drawDarkPixels = true
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,19 +89,31 @@ class CameraActivity : Activity(), PictureCallback, Camera.PreviewCallback, Surf
 
             }
         })
-        var flashIsOn : Boolean = false
-        findViewById<Button>(R.id.buttonCamera).setOnClickListener(){
-            var p : Camera.Parameters? = camera?.parameters
-            if(p != null){
-                if(!flashIsOn){
-                    p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH)
-                }else{
-                    p.setFlashMode(Camera.Parameters.FLASH_MODE_OFF)
+
+        findViewById<FloatingActionButton>(R.id.settingsCameraButton).setOnClickListener(){
+            val dialog = Dialog(this)
+            dialog.setContentView(R.layout.settings_camera_dialoge)
+            dialog.findViewById<Switch>(R.id.switchLight).isChecked = flashIsOn
+            dialog.findViewById<Switch>(R.id.switchBlackWhiteCamera).isChecked = drawDarkPixels
+            dialog.findViewById<Switch>(R.id.switchLight).setOnCheckedChangeListener { compoundButton, isActive ->
+                var p : Camera.Parameters? = camera?.parameters
+                if(p != null){
+                    if(isActive){
+                        p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH)
+                        flashIsOn = true
+                    }else{
+                        p.setFlashMode(Camera.Parameters.FLASH_MODE_OFF)
+                        flashIsOn = false
+                    }
+                    camera?.parameters = p
                 }
-                camera?.parameters = p
             }
-            flashIsOn = !flashIsOn
+            dialog.findViewById<Switch>(R.id.switchBlackWhiteCamera).setOnCheckedChangeListener { compoundButton, isActive ->
+                drawDarkPixels = isActive
+            }
+            dialog.show()
         }
+
     }
 
     override fun surfaceChanged(p0: SurfaceHolder, p1: Int, p2: Int, p3: Int) {
@@ -157,7 +173,7 @@ class CameraActivity : Activity(), PictureCallback, Camera.PreviewCallback, Surf
             Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
 
         //Get Image
-        var image = ImageToAscii.getAsciiImage(rotatedBitmap, brightness.toDouble(), true)
+        var image = ImageToAscii.getAsciiImage(rotatedBitmap, brightness.toDouble(), drawDarkPixels)
         printAsciiImageOnView(image)
     }
 
