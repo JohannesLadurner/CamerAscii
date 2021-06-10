@@ -1,6 +1,5 @@
 package com.example.camerascii
 
-import android.Manifest
 import android.app.Activity
 import android.content.pm.PackageManager
 import android.graphics.*
@@ -12,11 +11,8 @@ import android.util.Log
 import android.util.TypedValue
 import android.view.SurfaceHolder
 import android.view.SurfaceView
-import android.view.View
-import android.widget.EditText
-import android.widget.SeekBar
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.annotation.RequiresApi
 import java.io.ByteArrayOutputStream
 
 
@@ -28,6 +24,7 @@ class CameraActivity : Activity(), PictureCallback, Camera.PreviewCallback, Surf
     private var brightness = 75
     private lateinit var camView: SurfaceView
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera)
@@ -88,6 +85,19 @@ class CameraActivity : Activity(), PictureCallback, Camera.PreviewCallback, Surf
 
             }
         })
+        var flashIsOn : Boolean = false
+        findViewById<Button>(R.id.buttonCamera).setOnClickListener(){
+            var p : Camera.Parameters? = camera?.parameters
+            if(p != null){
+                if(!flashIsOn){
+                    p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH)
+                }else{
+                    p.setFlashMode(Camera.Parameters.FLASH_MODE_OFF)
+                }
+                camera?.parameters = p
+            }
+            flashIsOn = !flashIsOn
+        }
     }
 
     override fun surfaceChanged(p0: SurfaceHolder, p1: Int, p2: Int, p3: Int) {
