@@ -3,8 +3,8 @@
     <string name="from_camera">From Camera</string>
     <string name="from_gallery">From Gallery</string>
     <string name="save">Save</string>
-    <string name="brightness">Brightness = 75</string>
-    <string name="sample_size">Sample Size = 8</string>
+    <string name="brightness">Brightness: 75</string>
+    <string name="sample_size">Quality: Good</string>
     <string name="version_1_0">Version 1.0</string>
     <string name="with_cameraascii_you_can_convert_images_from_your_camera_or_gallery_to_fancy_ascii_images">With CameraAscii you can convert Images from your camera or gallery to fancy Ascii images</string>
     <string name="settings">Settings</string>

@@ -43,14 +43,24 @@ class GalleryToAsciiActivity : AppCompatActivity() {
 
             override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
                 // Display the current progress of SeekBar
-                when(i){
-                    0 -> sampleSize = 2
-                    1 -> sampleSize = 4
-                    2 -> sampleSize = 8
-                    3 -> sampleSize = 16
-                    4 -> sampleSize = 32
+                var newText = "Quality: "
+                if(i == 0){
+                    sampleSize = 2
+                    newText += "Ultra"
+                } else if(i == 1){
+                    sampleSize = 4
+                    newText += "Mega"
+                } else if(i == 2){
+                    sampleSize = 8
+                    newText += "Good"
+                } else if(i == 3){
+                    sampleSize = 16
+                    newText += "Bad"
+                } else if(i == 4){
+                    sampleSize = 32
+                    newText += "Garbage"
                 }
-                textSize.text = "Quality = $sampleSize"
+                textSize.text = newText
                 galleryToAscii()
 
             }
@@ -72,7 +82,7 @@ class GalleryToAsciiActivity : AppCompatActivity() {
             override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
                 // Display the current progress of SeekBar
 
-                brightText.text = "Brightness = $i"
+                brightText.text = "Brightness: $i"
                 brightness = i
                 galleryToAscii()
             }

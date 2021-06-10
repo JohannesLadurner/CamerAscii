@@ -14,12 +14,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/brightness"
-        app:layout_constraintTop_toBottomOf="@+id/brightnessCamera"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/surfaceViewCamera"
         app:layout_constraintBottom_toTopOf="@id/asciiLayoutCamera"
-        tools:layout_editor_absoluteX="247dp"
-        tools:layout_editor_absoluteY="151dp" />
+        app:layout_constraintHorizontal_bias="0.274"
+        app:layout_constraintLeft_toRightOf="@id/surfaceViewCamera"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/brightnessCamera"
+        app:layout_constraintVertical_bias="0.371" />
 
     <Button
         android:id="@+id/buttonCamera"
@@ -79,10 +79,10 @@
 
     <SeekBar
         android:id="@+id/sampleSizeCamera"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
+        android:layout_width="145dp"
+        android:layout_height="21dp"
         android:max="4"
-        android:progress="1"
+        android:progress="2"
         app:layout_constraintBottom_toTopOf="@id/brightnessCamera"
         app:layout_constraintLeft_toRightOf="@id/surfaceViewCamera"
         app:layout_constraintRight_toLeftOf="@id/settingsCameraButton"
@@ -90,16 +90,14 @@
 
     <SeekBar
         android:id="@+id/brightnessCamera"
-        android:layout_width="200dp"
+        android:layout_width="215dp"
+        android:layout_height="22dp"
         android:max="200"
         android:progress="75"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="259dp"
-        app:layout_constraintTop_toBottomOf="@id/sampleSizeCamera"
-        app:layout_constraintLeft_toRightOf="@id/surfaceViewCamera"
         app:layout_constraintBottom_toTopOf="@id/asciiLayoutCamera"
+        app:layout_constraintLeft_toRightOf="@id/surfaceViewCamera"
         app:layout_constraintRight_toRightOf="parent"
-        tools:layout_editor_absoluteY="121dp" />
+        app:layout_constraintTop_toBottomOf="@id/sampleSizeCamera" />
 
     <TextView
         android:id="@+id/textSampleCamera"
