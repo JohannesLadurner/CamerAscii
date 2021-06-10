@@ -79,16 +79,14 @@
 
     <SeekBar
         android:id="@+id/sampleSizeCamera"
-        android:layout_width="200dp"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
         android:max="4"
         android:progress="1"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/surfaceViewCamera"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toTopOf="@id/brightnessCamera"
-        tools:layout_editor_absoluteX="259dp"
-        tools:layout_editor_absoluteY="72dp" />
+        app:layout_constraintLeft_toRightOf="@id/surfaceViewCamera"
+        app:layout_constraintRight_toLeftOf="@id/settingsCameraButton"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <SeekBar
         android:id="@+id/brightnessCamera"
@@ -110,9 +108,22 @@
         android:text="@string/sample_size"
         app:layout_constraintTop_toBottomOf="@id/sampleSizeCamera"
         app:layout_constraintLeft_toRightOf="@id/surfaceViewCamera"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/settingsCameraButton"
         app:layout_constraintBottom_toTopOf="@id/brightnessCamera"
         tools:layout_editor_absoluteX="247dp"
         tools:layout_editor_absoluteY="74dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/settingsCameraButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:layout_constraintBottom_toTopOf="@id/brightnessCamera"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.546"
+        app:layout_constraintStart_toEndOf="@id/sampleSizeCamera"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.689"
+        app:srcCompat="@android:drawable/ic_menu_manage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

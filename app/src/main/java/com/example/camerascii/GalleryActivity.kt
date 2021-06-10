@@ -39,13 +39,13 @@ class GalleryToAsciiActivity : AppCompatActivity() {
             override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
                 // Display the current progress of SeekBar
                 when(i){
-                    0 -> sampleSize = 4
-                    1 -> sampleSize = 8
-                    2 -> sampleSize = 16
-                    3 -> sampleSize = 32
-                    4 -> sampleSize = 64
+                    0 -> sampleSize = 2
+                    1 -> sampleSize = 4
+                    2 -> sampleSize = 8
+                    3 -> sampleSize = 16
+                    4 -> sampleSize = 32
                 }
-                textSize.text = "Sample Size = $sampleSize"
+                textSize.text = "Quality = $sampleSize"
                 galleryToAscii()
 
             }

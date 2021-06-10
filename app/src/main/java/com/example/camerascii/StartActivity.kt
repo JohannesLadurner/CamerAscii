@@ -75,7 +75,6 @@ class StartActivity : AppCompatActivity() {
         val dia = Dialog(this)
         dia.setContentView(R.layout.about_dialoge)
         dia.show()
-
         dia.findViewById<FloatingActionButton>(R.id.mailFab).setOnClickListener {
             val intent = Intent(Intent.ACTION_SEND)
             intent.type = "plain/text"
