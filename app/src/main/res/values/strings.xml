@@ -2,7 +2,7 @@
     <string name="app_name">CamerAscii</string>
     <string name="from_camera">From Camera</string>
     <string name="from_gallery">From Gallery</string>
-    <string name="save">Save</string>
+    <string name="save">Save To Clipboard</string>
     <string name="brightness">Brightness: 75</string>
     <string name="sample_size">Quality: Good</string>
     <string name="version_1_0">Version 1.0</string>

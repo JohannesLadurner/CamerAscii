@@ -2,6 +2,9 @@ package com.example.camerascii
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.*
 import android.hardware.Camera
@@ -99,6 +102,13 @@ class CameraActivity : Activity(), PictureCallback, Camera.PreviewCallback, Surf
 
             }
         })
+        findViewById<Button>(R.id.saveButtonCamera).setOnClickListener(){
+            val clipboard: ClipboardManager =
+                getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val textToCopy = findViewById<EditText>(R.id.asciiImageCamera).text
+            val clip = ClipData.newPlainText("label", textToCopy)
+            clipboard.setPrimaryClip(clip)
+        }
 
         findViewById<FloatingActionButton>(R.id.settingsCameraButton).setOnClickListener(){
             val dialog = Dialog(this)

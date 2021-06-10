@@ -1,6 +1,9 @@
 package com.example.camerascii
 
 import android.app.Dialog
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
@@ -95,6 +98,14 @@ class GalleryToAsciiActivity : AppCompatActivity() {
 
             }
         })
+
+        findViewById<Button>(R.id.saveButtonGallery).setOnClickListener(){
+            val clipboard: ClipboardManager =
+                getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val textToCopy = findViewById<EditText>(R.id.asciiImageGallery).text
+            val clip = ClipData.newPlainText("label", textToCopy)
+            clipboard.setPrimaryClip(clip)
+        }
 
         findViewById<FloatingActionButton>(R.id.settingsGalleryButton).setOnClickListener(){
             val dialog = Dialog(this)
