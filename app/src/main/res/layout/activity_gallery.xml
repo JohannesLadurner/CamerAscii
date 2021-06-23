@@ -12,7 +12,7 @@
         android:layout_width="145dp"
         android:layout_height="19dp"
         android:max="4"
-        android:progress="1"
+        android:progress="2"
 
         app:layout_constraintBottom_toTopOf="@id/brightnessGallery"
         app:layout_constraintLeft_toRightOf="@id/originalImageGallery"
